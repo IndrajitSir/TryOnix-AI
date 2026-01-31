@@ -1,0 +1,5 @@
+/.env
+/node_modules
+/Readme.md
+/package-lock.json
+/logs
