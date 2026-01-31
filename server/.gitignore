@@ -1,5 +1,33 @@
-/.env
+# Dependencies
 /node_modules
-/Readme.md
 /package-lock.json
+
+# Environment variables
+.env
+/.env
+/.env.test
+/.env.production
+
+# Logs
 /logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Uploads
+/uploads/*
+!/uploads/.gitkeep
+
+# Operating System
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode
+.idea
+
+# Temporary Service Account (generated from base64)
+/temp-service-account.json
+
+# Documentation
+/Readme.md

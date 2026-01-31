@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const User = require('../models/User');
-const { OAuth2Client } = require('google-auth-library');
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import User from '../models/User.js';
+import { OAuth2Client } from 'google-auth-library';
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -115,7 +115,7 @@ const getMe = async (req, res) => {
     res.status(200).json(req.user);
 };
 
-module.exports = {
+export {
     registerUser,
     loginUser,
     googleAuth,

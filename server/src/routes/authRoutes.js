@@ -1,11 +1,12 @@
-const express = require('express');
+import express from 'express';
+import { registerUser, loginUser, getMe, googleAuth } from '../controllers/authController.js';
+import { protect } from '../middlewares/authMiddleware.js';
+
 const router = express.Router();
-const { registerUser, loginUser, getMe, googleAuth } = require('../controllers/authController');
-const { protect } = require('../middlewares/authMiddleware');
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/google', googleAuth);
 router.get('/me', protect, getMe);
 
-module.exports = router;
+export default router;

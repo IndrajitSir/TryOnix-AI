@@ -1,5 +1,7 @@
-const multer = require('multer');
-const path = require('path');
+import multer from 'multer';
+import path from 'path';
+import config from '../config/index.js';
+import { FileUploadError } from '../utils/errors.js';
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -11,6 +13,7 @@ const storage = multer.diskStorage({
 });
 
 const checkFileType = (file, cb) => {
+    // Basic extension check
     const filetypes = /jpeg|jpg|png|webp/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = filetypes.test(file.mimetype);
@@ -18,7 +21,7 @@ const checkFileType = (file, cb) => {
     if (extname && mimetype) {
         return cb(null, true);
     } else {
-        cb('Error: Images Only!');
+        cb(new FileUploadError('Images only! Allowed formats: jpeg, jpg, png, webp'));
     }
 };
 
@@ -27,6 +30,10 @@ const upload = multer({
     fileFilter: function (req, file, cb) {
         checkFileType(file, cb);
     },
+    limits: {
+        fileSize: config.upload.maxFileSize, // Limit from config
+        files: 2 // Max 2 files for our use case (person + cloth)
+    }
 });
 
-module.exports = upload;
+export default upload;

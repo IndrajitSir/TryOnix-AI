@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const tryOnSchema = new mongoose.Schema({
     userId: {
@@ -22,4 +22,4 @@ const tryOnSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('TryOn', tryOnSchema);
+export default mongoose.model('TryOn', tryOnSchema);

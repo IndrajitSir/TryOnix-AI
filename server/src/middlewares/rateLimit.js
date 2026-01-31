@@ -1,4 +1,4 @@
-const User = require('../models/User');
+import User from '../models/User.js';
 
 const checkTryOnLimit = async (req, res, next) => {
     try {
@@ -17,18 +17,6 @@ const checkTryOnLimit = async (req, res, next) => {
             lastDate.getFullYear() !== today.getFullYear()) {
 
             user.tryOnCount = 0;
-            // We don't save yet, will save on successful try-on or update here
-            // Better to update here to be safe or just let the controller handle increment
-            // But we need to reset if logic says so.
-            // Let's reset count in DB here if needed, or just attach flag.
-            // Simplest: Check. If allowed, next(). The Controller increments.
-            // Wait, if we don't reset in DB, the controller sees old high count?
-
-            // Logic:
-            // 1. If new day, reset count to 0. Save user.
-            // 2. If count >= 3, error.
-
-            user.tryOnCount = 0;
             user.lastTryOnDate = today; // Mark today as visited
             await user.save();
         }
@@ -44,4 +32,4 @@ const checkTryOnLimit = async (req, res, next) => {
     }
 };
 
-module.exports = checkTryOnLimit;
+export default checkTryOnLimit;
