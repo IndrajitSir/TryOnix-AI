@@ -58,17 +58,28 @@ Start the server:
 npm run dev
 ```
 
-### 3. Frontend Setup
-Navigate to the client directory:
+### 3. Python AI Service Setup
+Navigate to the `python_service` directory:
 ```bash
-cd ../client
-npm install
+cd python_service
+pip install -r requirements.txt
+```
+Create a `.env` file in the `python_service` directory with your Hugging Face token:
+```env
+HUGGINGFACE_HUB_TOKEN=your_hf_token
 ```
 
-Start the development server:
+### 4. Running the Application
+You can run all services together from the root directory:
 ```bash
+npm install
 npm run dev
 ```
+
+Alternatively, run them individually:
+- **Backend (Node)**: `cd server && npm run dev`
+- **Frontend (React)**: `cd client && npm run dev`
+- **AI Service (Python)**: `cd python_service && python server.py`
 
 Open [http://localhost:5173](http://localhost:5173) to view the app.
 

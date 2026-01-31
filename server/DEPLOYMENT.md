@@ -50,8 +50,17 @@ This guide covers deploying the TryOnix Server to various cloud providers.
      --set-env-vars NODE_ENV=production,...
    ```
 
+## Deploying Python AI Service (Render/Railway/Vultr)
+
+1. **Environment Variables**: Add `HUGGINGFACE_HUB_TOKEN`.
+2. **Build Command**: `pip install -r requirements.txt`.
+3. **Start Command**: `uvicorn server:app --host 0.0.0.0 --port $PORT`.
+
 ## Post-Deployment Verification
 
-1. Check logs to ensure server started correctly.
-2. Hit the health check endpoint: `https://your-app.com/health`.
-   - Should return `{"status": "UP", ...}`.
+1. **Check logs** to ensure servers started correctly.
+2. **Hit the health check endpoints**:
+   - Node: `https://your-node-app.com/health`
+   - Python: `https://your-python-app.com/health`
+3. **Update `BACKEND_URL`**: Ensure the Node.js server's environment variable `BACKEND_URL` points to your deployed Python service.
+4. **Update `VITE_API_URL`**: Ensure the Frontend point to your deployed Node.js service.

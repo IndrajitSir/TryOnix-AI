@@ -1,0 +1,15 @@
+{
+  "name": "tryonix-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install && cd ../python_service && pip install -r requirements.txt",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "dev:python": "cd python_service && python server.py",
+    "dev": "npx concurrently \"npm run dev:server\" \"npm run dev:client\" \"npm run dev:python\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
