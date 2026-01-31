@@ -93,7 +93,7 @@ TryOnix/
 ```
 
 ## AI Integration Note
-The AI service is currently mocked (`server/src/services/aiService.js`) to return the uploaded person image after a delay. To enable real AI processing, uncomment the API call section in that file and provide valid Google Cloud credentials.
+
 
 ## License
 MIT
