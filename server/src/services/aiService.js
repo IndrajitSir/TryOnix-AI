@@ -2,29 +2,22 @@ import axios from 'axios';
 import config from '../config/index.js';
 import logger from '../utils/logger.js';
 
-const generateImage = async (prompt, options = {}) => {
+const generateImage = async (prompt, personImage = null, clothingImage = null, options = {}) => {
     // Ensure URL is correctly formatted
     const baseUrl = config.aiServiceUrl || 'http://localhost:8000';
     const url = `${baseUrl.replace(/\/$/, '')}/generate-image`;
 
-    // Check if prompt contains image URLs (rudimentary parsing or just pass through)
-    // The previous implementation constructed a long prompt string with URLs. 
-    // The Python backend might need 'image_url' explicitly if we want it to load the image.
-    // However, the controller passes a single "prompt" string containing the URLs. 
-    // We will extract image URL if present for better handling in Python if needed, 
-    // or just pass prompt as is. 
-    // For now, pass prompt as is, and let Python side handle it (or just T2I).
-
-    // Parse options from controller (it passes a single prompt usually)
-    // But controller calls: generateImageWithFallback(prompt)
-
     try {
-        logger.debug(`Calling Python Backend at ${url} with prompt: ${prompt.substring(0, 50)}...`);
+        logger.debug(`Calling Python Backend at ${url}`);
 
         const payload = {
             prompt,
+            person_image: personImage,
+            clothing_image: clothingImage,
+            model_type: options.modelType || (clothingImage ? 'vto' : 'flux'),
             num_inference_steps: options.num_inference_steps || 25,
-            guidance_scale: options.guidance_scale || 7.5
+            guidance_scale: options.guidance_scale || 7.5,
+            strength: options.strength || 0.75
         };
 
         // Use timeout to prevent hanging

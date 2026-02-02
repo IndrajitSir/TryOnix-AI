@@ -66,7 +66,7 @@ const createTryOn = async (req, res, next) => {
         Generate a high-quality, photorealistic image of the person wearing the cloth.`;
 
         // Call service with centralized fallback logic
-        const result = await generateImage(prompt);
+        const result = await generateImage(prompt, personImageUrl, clothImageUrl);
 
         if (!result.success) {
             return res.status(503).json({

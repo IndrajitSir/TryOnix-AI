@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom';
 import { Sparkles, Zap, Shield, ArrowRight, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+import { useAuth } from '../context/AuthContext';
+
 const Landing = () => {
+    const { user, logout } = useAuth();
+
     const features = [
         {
             icon: Zap,
@@ -30,8 +34,9 @@ const Landing = () => {
             {/* Hero Section */}
             <div className="relative overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-purple-50">
                 <div className="max-w-7xl mx-auto">
-                    <div className="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:w-full lg:pb-28 xl:pb-32">
+                    <div className="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
                         <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+
                             <div className="text-center lg:text-left">
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
@@ -55,18 +60,46 @@ const Landing = () => {
                                     transition={{ duration: 0.6, delay: 0.2 }}
                                     className="mt-8 sm:mt-10 sm:flex sm:justify-center lg:justify-start gap-4"
                                 >
-                                    <Link
-                                        to="/register"
-                                        className="w-full sm:w-auto flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-xl text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-2xl md:py-4 md:text-lg md:px-10 transition-all transform hover:scale-105 active:scale-95"
-                                    >
-                                        Try Now <ArrowRight className="ml-2 w-5 h-5" />
-                                    </Link>
-                                    <Link
-                                        to="/login"
-                                        className="mt-3 sm:mt-0 w-full sm:w-auto flex items-center justify-center px-8 py-4 border-2 border-gray-300 text-base font-bold rounded-xl text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 md:py-4 md:text-lg md:px-10 transition-all"
-                                    >
-                                        Login
-                                    </Link>
+                                    {user ? (
+                                        <div className="flex flex-col sm:flex-row gap-4 items-center">
+                                            <Link
+                                                to="/tryon"
+                                                className="w-full sm:w-auto flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-xl text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-2xl md:py-4 md:text-lg md:px-10 transition-all transform hover:scale-105 active:scale-95"
+                                            >
+                                                Go to Dashboard <ArrowRight className="ml-2 w-5 h-5" />
+                                            </Link>
+                                            <div className="flex items-center gap-3 px-4 py-2 bg-indigo-50 rounded-lg border border-indigo-100">
+                                                <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold">
+                                                    {user.name.charAt(0).toUpperCase()}
+                                                </div>
+                                                <div className="text-left">
+                                                    <p className="text-sm font-bold text-gray-900">{user.name}</p>
+                                                    <button
+                                                        onClick={logout}
+                                                        className="text-xs text-indigo-600 hover:text-indigo-800 font-medium"
+                                                    >
+                                                        Logout
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <Link
+                                                to="/register"
+                                                className="w-full sm:w-auto flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-xl text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-2xl md:py-4 md:text-lg md:px-10 transition-all transform hover:scale-105 active:scale-95"
+                                            >
+                                                Try Now <ArrowRight className="ml-2 w-5 h-5" />
+                                            </Link>
+                                            <Link
+                                                to="/login"
+                                                className="mt-3 sm:mt-0 w-full sm:w-auto flex items-center justify-center px-8 py-4 border-2 border-gray-300 text-base font-bold rounded-xl text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 md:py-4 md:text-lg md:px-10 transition-all"
+                                            >
+                                                Login
+                                            </Link>
+                                        </>
+                                    )}
+
                                 </motion.div>
 
                                 <motion.div

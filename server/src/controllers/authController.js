@@ -3,13 +3,16 @@ import bcrypt from 'bcryptjs';
 import User from '../models/User.js';
 import { OAuth2Client } from 'google-auth-library';
 
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+import config from '../config/index.js';
+
+const client = new OAuth2Client(config.google.clientId);
 
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: '30d',
+    return jwt.sign({ id }, config.jwt.secret, {
+        expiresIn: config.jwt.expiresIn,
     });
 };
+
 
 // @desc    Register new user
 // @route   POST /auth/register
@@ -77,8 +80,9 @@ const googleAuth = async (req, res) => {
     try {
         const ticket = await client.verifyIdToken({
             idToken: token,
-            audience: process.env.GOOGLE_CLIENT_ID,
+            audience: config.google.clientId,
         });
+
         const { name, email, sub } = ticket.getPayload();
 
         let user = await User.findOne({ email });
