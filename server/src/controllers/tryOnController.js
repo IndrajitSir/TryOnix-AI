@@ -6,6 +6,9 @@ import logger from '../utils/logger.js';
 import { NotFoundError, AuthorizationError, ValidationError } from '../utils/errors.js';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
+
+const isVercel = process.env.VERCEL === '1';
 
 // Helper to delete local files
 const deleteLocalFiles = (files) => {
@@ -25,6 +28,7 @@ const deleteLocalFiles = (files) => {
         }
     });
 };
+
 
 // @desc    Upload images and generate try-on
 // @route   POST /tryon
@@ -80,7 +84,8 @@ const createTryOn = async (req, res, next) => {
 
         // 3. Process Result (Base64 -> Temp File -> Cloudinary)
         const tempFileName = `gen-${Date.now()}.png`;
-        const tempPath = path.join('uploads', tempFileName);
+        const uploadDir = isVercel ? os.tmpdir() : 'uploads';
+        const tempPath = path.join(uploadDir, tempFileName);
 
         // Convert Base64 directly to Buffer
         const buffer = Buffer.from(result.image, 'base64');

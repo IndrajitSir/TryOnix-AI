@@ -37,10 +37,17 @@ const fileFormat = winston.format.combine(
     winston.format.json()
 );
 
-// Create logs directory if it doesn't exist
+// Detect if we are running on Vercel
+const isVercel = process.env.VERCEL === '1';
+
+// Create logs directory if it doesn't exist (skip on Vercel)
 const logsDir = path.join(__dirname, '../../', config.logging.dir);
-if (!fs.existsSync(logsDir)) {
-    fs.mkdirSync(logsDir, { recursive: true });
+if (!isVercel && !fs.existsSync(logsDir)) {
+    try {
+        fs.mkdirSync(logsDir, { recursive: true });
+    } catch (err) {
+        console.warn('Failed to create logs directory:', err.message);
+    }
 }
 
 // Configure transports
@@ -54,8 +61,8 @@ transports.push(
     })
 );
 
-// File transports (daily rotation)
-if (config.isProduction || process.env.ENABLE_FILE_LOGGING === 'true') {
+// File transports (daily rotation) - disabled on Vercel
+if (!isVercel && (config.isProduction || process.env.ENABLE_FILE_LOGGING === 'true')) {
     // Combined logs (all levels)
     transports.push(
         new DailyRotateFile({
